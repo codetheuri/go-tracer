@@ -1,0 +1,36 @@
+services:
+  # This service just receives and logs the POST requests from the agent
+  # receiver:
+  #   image: jmalloc/echo-server
+  #   container_name: network-go-receiver
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #   - LOG_HTTP_BODY=true
+  # command: httpbin --port 8080
+
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile # We will create this next
+    container_name: network-go-agent
+    command: ["./network-agent"]
+    # This is crucial for the container to see the host's network interfaces
+    network_mode: "host"
+    # Use host PID namespace to see processes (though not used here, good practice)
+    pid: "host"
+    privileged: true # Required for raw packet capture
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      # Find your active interface with `ip addr` or `ifconfig`
+      # IMPORTANT: Change 'eth0' to your actual network interface (e.g., 'en0', 'wlp2s0')
+      - AGENT_INTERFACE=wlan0
+      - AGENT_BPF_FILTER=tcp
+      # Send data to the httpbin receiver service
+      - AGENT_ENDPOINT_URL=http://127.0.0.1:8000/ingest
+      - AGENT_BATCH_SIZE=1
+      - AGENT_SEND_INTERVAL=120
+    # depends_on:
+    #   - receiver

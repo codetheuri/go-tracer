@@ -1,0 +1,14 @@
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+network-agent
+
+# Go build cache
+*.test
+*.prof
+
+# OS files
+.DS_Store
