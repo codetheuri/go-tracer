@@ -1,4 +1,4 @@
-# Smart-Trace Sensor (network-go)
+# Go-Tracer Sensor 
 
 [![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
